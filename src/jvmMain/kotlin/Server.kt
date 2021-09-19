@@ -20,6 +20,7 @@ val users = mutableListOf(
 )
 
 fun main() {
+
     embeddedServer(Netty, 9090) {
         install(ContentNegotiation) {
             json()
@@ -34,12 +35,27 @@ fun main() {
             gzip()
         }
         routing {
+            route(User.path) {
+                get {
+                    call.respond(users)
+                }
+                post {
+                    users += call.receive<User>()
+                    call.respond(HttpStatusCode.OK)
+                }
+            }
             get("/index.html") {
+                var a = Msg("", "")
                 call.respondText(
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
                     ContentType.Text.Html
                 )
             }
+
+            static("/") {
+            resources("")
+            }
+
             post("/check/index") {
                 val params = call.receiveParameters()
                 val username: String = params["username1"].toString()
@@ -48,6 +64,7 @@ fun main() {
                     if(user.username == username){
                         if(user.password==password){
                             call.respondRedirect("/sign-in.html")
+
                         }else{
                             call.respondRedirect("/index.html")
                         }
@@ -55,7 +72,7 @@ fun main() {
                 }
                 call.respondRedirect("/index.html")
             }
-            
+
             get("/sign-in.html") {
                 call.respondText(
                     this::class.java.classLoader.getResource("sign-in.html")!!.readText(),
@@ -97,10 +114,7 @@ fun main() {
                     call.respondRedirect("/index.html")
                 }
             }
-            /**
-            static("/") {
-                resources("")
-            }**/
+
         }
 
 
