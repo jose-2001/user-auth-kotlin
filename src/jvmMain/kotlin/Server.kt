@@ -13,6 +13,12 @@ import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.reactivestreams.KMongo
 import com.mongodb.ConnectionString
 
+
+val users = mutableListOf(
+	User("seyerman","seyerman","Juan","Reyes","05/05/1995"),
+	User("favellaneda","favellaneda","Fabio","Avellaneda","05/05/1995")
+)
+
 fun main() {
     embeddedServer(Netty, 9090) {
         install(ContentNegotiation) {

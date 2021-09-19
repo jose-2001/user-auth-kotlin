@@ -1,7 +1,7 @@
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ShoppingListItem(
+data class User(
     val username: String,
     val password: String,
     val firstName: String,
