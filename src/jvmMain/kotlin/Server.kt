@@ -41,8 +41,21 @@ fun main() {
                 )
             }
             post("/check/index") {
-                call.respondRedirect("/sign-in.html")
+                val params = call.receiveParameters()
+                val username: String = params["username1"].toString()
+                val password: String = params["pwd2"].toString()
+                for(user in users){
+                    if(user.username == username){
+                        if(user.password==password){
+                            call.respondRedirect("/sign-in.html")
+                        }else{
+                            call.respondRedirect("/index.html")
+                        }
+                    }
+                }
+                call.respondRedirect("/index.html")
             }
+            
             get("/sign-in.html") {
                 call.respondText(
                     this::class.java.classLoader.getResource("sign-in.html")!!.readText(),
