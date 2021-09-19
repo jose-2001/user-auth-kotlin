@@ -56,7 +56,33 @@ fun main() {
                 )
             }
             post("/save/index") {
-                call.respondRedirect("/sign-up.html")
+
+                val params = call.receiveParameters()
+                val username: String = params["Username"].toString()
+                val password: String = params["pwd"].toString()
+                val password1: String = params["pwd1"].toString()
+                val fName: String = params["fName"].toString()
+                val lName: String = params["lName"].toString()
+                val bDate: String = params["bDate"].toString()
+                var success = true
+                if(password != password1){
+                    //display message passwords don't match
+                    success = false
+                }
+                var exists =false
+                for (user in users){
+                    if(user.username==username){
+                        exists=true
+                    }
+                }
+                if(exists){
+                    //display message username exists
+                    success = false
+                }
+                if(success) {
+                    users.add(User(username, password, fName, lName, bDate))
+                    call.respondRedirect("/index.html")
+                }
             }
             /**
             static("/") {
