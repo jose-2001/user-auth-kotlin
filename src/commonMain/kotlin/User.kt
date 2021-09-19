@@ -7,4 +7,9 @@ data class User(
     val firstName: String,
     val lastName: String,
     val birthdate: String) {
+
+    companion object {
+        const val path = "/users"
+    }
+
 }

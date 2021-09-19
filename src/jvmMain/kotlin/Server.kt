@@ -18,7 +18,7 @@ val users = mutableListOf(
 	User("seyerman","seyerman","Juan","Reyes","05/05/1995"),
 	User("favellaneda","favellaneda","Fabio","Avellaneda","05/05/1995")
 )
-
+val msgs = mutableListOf(Msg("",""))
 fun main() {
 
     embeddedServer(Netty, 9090) {
@@ -45,13 +45,17 @@ fun main() {
                 }
             }
             get("/index.html") {
-                var a = Msg("", "")
                 call.respondText(
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
                     ContentType.Text.Html
                 )
             }
+            route(Msg.path) {
+                get {
+                    call.respond(msgs)
+                }
 
+            }
             static("/") {
             resources("")
             }
@@ -96,7 +100,7 @@ fun main() {
                 val bDate: String = params["bDate"].toString()
                 var success = true
                 if(password != password1){
-                    //display message passwords don't match
+                    msgs.get(0).msgSignUp="The passwords don't match!"
                     success = false
                 }
                 var exists =false
@@ -106,13 +110,15 @@ fun main() {
                     }
                 }
                 if(exists){
-                    //display message username exists
+                    msgs.get(0).msgSignUp="Username already exists!"
                     success = false
                 }
                 if(success) {
                     users.add(User(username, password, fName, lName, bDate))
+                    msgs.get(0).msgSignIn="User created successfully!"
                     call.respondRedirect("/index.html")
                 }
+                else{call.respondRedirect("/sign-up.html")}
             }
 
         }

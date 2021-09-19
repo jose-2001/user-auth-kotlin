@@ -22,3 +22,8 @@ suspend fun addUser(shoppingListItem: User) {
         body = shoppingListItem
     }
 }
+suspend fun getMsgs():List<Msg> {
+    return jsonClient.get(endpoint + Msg.path)
+}
+
+
