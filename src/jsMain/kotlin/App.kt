@@ -14,11 +14,20 @@ val App = functionalComponent<RProps> { _ ->
             setUsers(getUsers())
         }
     }
-    ul {
-        users.forEach { item ->
-            li {
-                key = item.toString()
-                +"[${item.username}] ${item.password} "
+    users.forEach { item ->
+        tr {
+            key = (item.key).toString()
+            td {
+                +"${item.username}"
+            }
+            td {
+                +"${item.lastName}"
+            }
+            td {
+                +"${item.firstName}"
+            }
+            td {
+                +"${item.birthdate}"
             }
         }
     }

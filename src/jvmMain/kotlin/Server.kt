@@ -15,8 +15,8 @@ import com.mongodb.ConnectionString
 
 
 val users = mutableListOf(
-	User("seyerman","seyerman","Juan","Reyes","05/05/1995"),
-	User("favellaneda","favellaneda","Fabio","Avellaneda","05/05/1995")
+	User("seyerman","seyerman","Juan","Reyes","05/05/1995", 1),
+	User("favellaneda","favellaneda","Fabio","Avellaneda","05/05/1995", 2)
 )
 val msgs = mutableListOf(Msg("",""))
 fun main() {
@@ -100,7 +100,7 @@ fun main() {
                 val bDate: String = params["bDate"].toString()
                 var success = true
                 if(password != password1){
-                    msgs.get(0).msgSignUp="The passwords don't match!"
+                    msgs[0].msgSignUp="The passwords don't match!"
                     success = false
                 }
                 var exists =false
@@ -110,12 +110,12 @@ fun main() {
                     }
                 }
                 if(exists){
-                    msgs.get(0).msgSignUp="Username already exists!"
+                    msgs[0].msgSignUp="Username already exists!"
                     success = false
                 }
                 if(success) {
-                    users.add(User(username, password, fName, lName, bDate))
-                    msgs.get(0).msgSignIn="User created successfully!"
+                    users.add(User(username, password, fName, lName, bDate, users.size+1))
+                    msgs[0].msgSignIn="User created successfully!"
                     call.respondRedirect("/index.html")
                 }
                 else{call.respondRedirect("/sign-up.html")}

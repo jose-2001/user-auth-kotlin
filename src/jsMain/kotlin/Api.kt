@@ -16,12 +16,6 @@ suspend fun getUsers(): List<User> {
     return jsonClient.get(endpoint + User.path)
 }
 
-suspend fun addUser(shoppingListItem: User) {
-    jsonClient.post<Unit>(endpoint + User.path) {
-        contentType(ContentType.Application.Json)
-        body = shoppingListItem
-    }
-}
 suspend fun getMsgs():List<Msg> {
     return jsonClient.get(endpoint + Msg.path)
 }

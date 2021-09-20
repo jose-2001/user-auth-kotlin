@@ -14,6 +14,11 @@ fun main() {
             child(App3)
         }
     }
+    if(document.getElementById("dataUsers")!=null){
+        render(document.getElementById("dataUsers")) {
+            child(App)
+        }
+    }
 
 }
 

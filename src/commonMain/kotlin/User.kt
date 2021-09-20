@@ -6,10 +6,10 @@ data class User(
     val password: String,
     val firstName: String,
     val lastName: String,
-    val birthdate: String) {
+    val birthdate: String,
+    val key: Int) {
 
     companion object {
         const val path = "/users"
     }
-
 }
