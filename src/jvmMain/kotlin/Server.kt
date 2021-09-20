@@ -135,11 +135,11 @@ fun main() {
 
                 var success = true
                 if( username=="" || password=="" || password1=="" || fName=="" || lName=="" || bDate==""){
-                    msgs.get(0).msgSignUp="Plis fill all the inputs!"
+                    msgs.get(0).msgSignUp="Please fill all the inputs!"
                     success = false
                 }
                 if(username.contains(";") || password.contains(";") || password1.contains(";") || fName.contains(";") || lName.contains(";") || bDate.contains(";")){
-                    msgs.get(0).msgSignUp="Plis don't use the character ;"
+                    msgs.get(0).msgSignUp="Please don't use the character ;"
                     success = false
                 }
                 if(password != password1){
