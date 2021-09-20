@@ -12,6 +12,9 @@ import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.reactivestreams.KMongo
 import com.mongodb.ConnectionString
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
 
 
 val users = mutableListOf(
@@ -106,6 +109,12 @@ fun main() {
                 val fName: String = params["fName"].toString()
                 val lName: String = params["lName"].toString()
                 val bDate: String = params["bDate"].toString()
+
+                /**val sdf = SimpleDateFormat("dd/MM/yyyy")
+                val currentDate = sdf.format(Date())
+                var actualDate = currentDate.split("/")
+                var dateEntered = bDate.split("/")
+                **/
                 var success = true
                 if(password != password1){
                     msgs.get(0).msgSignUp="The passwords don't match!"
