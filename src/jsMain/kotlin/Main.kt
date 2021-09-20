@@ -4,6 +4,11 @@ import react.dom.render
 import kotlinx.browser.document
 
 fun main() {
+    if(document.getElementById("dataUsers")!=null){
+        render(document.getElementById("dataUsers")) {
+            child(App)
+        }
+    }
     if(document.getElementById("messageSignUp")!=null){
         render(document.getElementById("messageSignUp")) {
             child(App2)
@@ -14,11 +19,12 @@ fun main() {
             child(App3)
         }
     }
-    if(document.getElementById("dataUsers")!=null){
-        render(document.getElementById("dataUsers")) {
-            child(App)
+    if(document.getElementById("userNameTable")!=null){
+        render(document.getElementById("userNameTable")) {
+            child(App4)
         }
     }
+
 
 }
 

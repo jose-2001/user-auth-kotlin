@@ -21,7 +21,7 @@ val users = mutableListOf(
 	User("seyerman","seyerman","Juan","Reyes","05/05/1995", 1),
 	User("favellaneda","favellaneda","Fabio","Avellaneda","05/05/1995", 2)
 )
-val msgs = mutableListOf(Msg("",""))
+val msgs = mutableListOf(Msg("","", ""))
 fun main() {
 
     embeddedServer(Netty, 9090) {
@@ -76,6 +76,7 @@ fun main() {
                     if(user.username == username){
                         if(user.password==password){
                             call.respondRedirect("/sign-in.html")
+                            msgs.get(0).msgTable=username
                         }else{
                             msgs.get(0).msgSignIn="User or password incorrect!"
                             call.respondRedirect("/index.html")
@@ -110,12 +111,11 @@ fun main() {
                 val lName: String = params["lName"].toString()
                 val bDate: String = params["bDate"].toString()
 
-                /**val sdf = SimpleDateFormat("dd/MM/yyyy")
-                val currentDate = sdf.format(Date())
-                var actualDate = currentDate.split("/")
-                var dateEntered = bDate.split("/")
-                **/
                 var success = true
+                if( username=="" || password=="" || password1=="" || fName=="" || lName=="" || bDate==""){
+                    msgs.get(0).msgSignUp="Plis fill all the inputs!"
+                    success = false
+                }
                 if(password != password1){
                     msgs.get(0).msgSignUp="The passwords don't match!"
                     success = false
