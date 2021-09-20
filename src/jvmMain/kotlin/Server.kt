@@ -30,22 +30,7 @@ var users = mutableListOf(
 val msgs = mutableListOf(Msg("","", ""))
 val pathData = "data/users.txt"
 
-fun saveUsers(){
-
-}
-
 fun main() {
-
-    val bufferedReader: BufferedReader = File(pathData).bufferedReader()
-    val lines1 = mutableListOf<String>()
-    bufferedReader.useLines { lines -> lines.forEach { lines1.add(it) } }
-
-    var usersTemp = mutableListOf<User>()
-    for(line in lines1){
-        var dataOfUser = line.split(";")
-        usersTemp.add(User(dataOfUser[0],dataOfUser[1], dataOfUser[2], dataOfUser[3], dataOfUser[4], dataOfUser[5].toInt()))
-    }
-    users = usersTemp
 
     embeddedServer(Netty, 9090) {
         install(ContentNegotiation) {
@@ -60,6 +45,20 @@ fun main() {
         install(Compression) {
             gzip()
         }
+
+        val bufferedReader: BufferedReader = File(pathData).bufferedReader()
+        val lines1 = mutableListOf<String>()
+        bufferedReader.useLines { lines -> lines.forEach { lines1.add(it) } }
+
+        var usersTemp = mutableListOf<User>()
+        for(line in lines1){
+            var dataOfUser = line.split(";")
+            if(dataOfUser.size==6){
+                usersTemp.add(User(dataOfUser[0],dataOfUser[1], dataOfUser[2], dataOfUser[3], dataOfUser[4], dataOfUser[5].toInt()))
+            }
+        }
+        users = usersTemp
+
         routing {
             route(User.path) {
                 get {
