@@ -45,6 +45,7 @@ fun main() {
                 }
             }
             get("/index.html") {
+                msgs.get(0).msgSignUp=""
                 call.respondText(
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
                     ContentType.Text.Html
@@ -53,6 +54,10 @@ fun main() {
             route(Msg.path) {
                 get {
                     call.respond(msgs)
+                }
+                post {
+                    users += call.receive<User>()
+                    call.respond(HttpStatusCode.OK)
                 }
 
             }
@@ -68,22 +73,25 @@ fun main() {
                     if(user.username == username){
                         if(user.password==password){
                             call.respondRedirect("/sign-in.html")
-
                         }else{
+                            msgs.get(0).msgSignIn="User or password incorrect!"
                             call.respondRedirect("/index.html")
                         }
                     }
                 }
                 call.respondRedirect("/index.html")
+                msgs.get(0).msgSignIn="User or password incorrect"
             }
 
             get("/sign-in.html") {
+                msgs.get(0).msgSignIn=""
                 call.respondText(
                     this::class.java.classLoader.getResource("sign-in.html")!!.readText(),
                     ContentType.Text.Html
                 )
             }
             get("/sign-up.html") {
+                msgs.get(0).msgSignIn=""
                 call.respondText(
                     this::class.java.classLoader.getResource("sign-up.html")!!.readText(),
                     ContentType.Text.Html
@@ -100,7 +108,7 @@ fun main() {
                 val bDate: String = params["bDate"].toString()
                 var success = true
                 if(password != password1){
-                    msgs[0].msgSignUp="The passwords don't match!"
+                    msgs.get(0).msgSignUp="The passwords don't match!"
                     success = false
                 }
                 var exists =false
@@ -110,12 +118,12 @@ fun main() {
                     }
                 }
                 if(exists){
-                    msgs[0].msgSignUp="Username already exists!"
+                    msgs.get(0).msgSignUp="Username already exists!"
                     success = false
                 }
                 if(success) {
                     users.add(User(username, password, fName, lName, bDate, users.size+1))
-                    msgs[0].msgSignIn="User created successfully!"
+                    msgs.get(0).msgSignIn="User created successfully!"
                     call.respondRedirect("/index.html")
                 }
                 else{call.respondRedirect("/sign-up.html")}
