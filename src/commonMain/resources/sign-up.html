@@ -47,10 +47,10 @@
                 let datePast
                 if(month-10>=0){
                     datePast = (date.getFullYear()-70)+"-"+month+"-"+date.getDate()
-                    actualDate = date.getFullYear()+"-"+month+"-"+date.getDate()
+                    actualDate = (date.getFullYear()-12)+"-"+month+"-"+date.getDate()
                 }else{
                     datePast = (date.getFullYear()-70)+"-"+"0"+month+"-"+date.getDate()
-                    actualDate = date.getFullYear()+"-"+"0"+month+"-"+date.getDate()
+                    actualDate = (date.getFullYear()-12)+"-"+"0"+month+"-"+date.getDate()
                 }
                  
                 let input = document.querySelector('#bDate');

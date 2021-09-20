@@ -12,17 +12,40 @@ import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.*
 import org.litote.kmongo.reactivestreams.KMongo
 import com.mongodb.ConnectionString
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
 
-val users = mutableListOf(
-	User("seyerman","seyerman","Juan","Reyes","05/05/1995", 1),
-	User("favellaneda","favellaneda","Fabio","Avellaneda","05/05/1995", 2)
+var users = mutableListOf(
+	User("seyerman","seyerman","Juan","Reyes","05-05-1995", 1),
+	User("favellaneda","favellaneda","Fabio","Avellaneda","05-05-1995", 2)
 )
 val msgs = mutableListOf(Msg("","", ""))
+val pathData = "data/users.txt"
+
+fun saveUsers(){
+
+}
+
 fun main() {
+
+    val bufferedReader: BufferedReader = File(pathData).bufferedReader()
+    val lines1 = mutableListOf<String>()
+    bufferedReader.useLines { lines -> lines.forEach { lines1.add(it) } }
+
+    var usersTemp = mutableListOf<User>()
+    for(line in lines1){
+        var dataOfUser = line.split(";")
+        usersTemp.add(User(dataOfUser[0],dataOfUser[1], dataOfUser[2], dataOfUser[3], dataOfUser[4], dataOfUser[5].toInt()))
+    }
+    users = usersTemp
 
     embeddedServer(Netty, 9090) {
         install(ContentNegotiation) {
@@ -116,6 +139,10 @@ fun main() {
                     msgs.get(0).msgSignUp="Plis fill all the inputs!"
                     success = false
                 }
+                if(username.contains(";") || password.contains(";") || password1.contains(";") || fName.contains(";") || lName.contains(";") || bDate.contains(";")){
+                    msgs.get(0).msgSignUp="Plis don't use the character ;"
+                    success = false
+                }
                 if(password != password1){
                     msgs.get(0).msgSignUp="The passwords don't match!"
                     success = false
@@ -134,6 +161,12 @@ fun main() {
                     users.add(User(username, password, fName, lName, bDate, users.size+1))
                     msgs.get(0).msgSignIn="User created successfully!"
                     call.respondRedirect("/index.html")
+
+                    val archivo = File(pathData)
+                    archivo.writeText("")
+                    for(user in users){
+                        archivo.appendText(user.username+";"+user.password+";"+user.firstName+";"+user.lastName+";"+user.birthdate+";"+user.key+"\n")
+                    }
                 }
                 else{call.respondRedirect("/sign-up.html")}
             }
